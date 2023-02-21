@@ -1,4 +1,4 @@
-# BlogApp
+# SpaBlog
 
 ## Installing
 
