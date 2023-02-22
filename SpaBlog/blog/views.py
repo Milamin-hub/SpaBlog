@@ -1,6 +1,7 @@
 from django.views.generic import ListView, CreateView, DetailView
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
+from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -15,6 +16,11 @@ class PostListView(ListView):
     context_object_name = 'posts'
     paginate_by = 25
     ordering = ['-created']
+
+    def get(self, request):
+        posts = Post.objects.all()
+        comments = Comment.objects.all()
+        return render(request, 'blog/index.html', {'posts': posts, 'comments': comments})
 
 
 class PostDetailView(DetailView):
