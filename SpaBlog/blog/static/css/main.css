@@ -22,13 +22,13 @@ font-family: 'Poppins', sans-serif;
     --dark-bg: var(--black);
     --dark-border: var(--black-border);
     --header-text: var(--white);
-    --accent: var(--purple);
+    --content: var(--purple);
 
     /* Light mode */
     --page-bg: var(--white);
     --text-color: var(--black);
 
-    --title-1: var(--accent);
+    --title-1: var(--content);
 
     --project-card-bg: var(--white);
     --project-card-text: var(--black);
@@ -158,7 +158,7 @@ html, body {
     display: block;
     height: 2px;
     width: 100%;
-    background-color: var(--accent);
+    background-color: var(--content);
 }
 
 /* Dark mode btn */
@@ -243,7 +243,7 @@ html, body {
 
 .header__title em {
     font-style: normal;
-    color: var(--accent);
+    color: var(--content);
 }
 
 .header__text {
@@ -264,7 +264,7 @@ html, body {
     padding: 12px 28px;
 
     border-radius: 5px;
-    background-color: var(--accent);
+    background-color: var(--content);
     color: var(--white);
     letter-spacing: 0.15px;
     font-size: 16px;
@@ -380,7 +380,7 @@ html, body {
 }
 
 .content-list a {
-    color: var(--accent);
+    color: var(--content);
 }
 
 .content-list__item {

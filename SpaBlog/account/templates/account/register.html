@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+  <form class="acc" method="post">
+    {% csrf_token %}
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username" class="form-input" required>
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email" class="form-input" required>
+    <label for="password1">Password:</label>
+    <input type="password" name="password1" id="password1" class="form-input" required>
+    <label for="password2">Confirm password:</label>
+    <input type="password" name="password2" id="password2" class="form-input" required>
+    {% if error %}
+      <p class="form-error-cont">{{ error }}</p>
+    {% endif %}
+    <button type="submit" class="form-button"><em>Register</em></button>
+  </form>
+{% endblock %}

@@ -6,7 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SpaBlog{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
 </head>
     
     <nav class="nav">
@@ -22,10 +24,10 @@
                 <ul class="nav-list">
                     {% if request.user.is_authenticated %}
                         <li class="nav-list__item"><a href="{% url 'home' %}" class="nav-list__link nav-list__link--active">Home</a></li>
-                        <li class="nav-list__item"><a href="./skills.html" class="nav-list__link">Logout</a></li>
+                        <li method="post" class="nav-list__item"><a href="{% url 'logout' %}" class="nav-list__link">Logout</a></li>
                     {% else %}
-                        <li class="nav-list__item"><a href="blog.html" class="nav-list__link">Login</a></li>
-                        <li class="nav-list__item"><a href="./contacts.html" class="nav-list__link">Sign</a></li>
+                        <li class="nav-list__item"><a href="{% url 'login' %}" class="nav-list__link">Login</a></li>
+                        <li class="nav-list__item"><a href="{% url 'register' %}" class="nav-list__link">Sign up</a></li>
                     {% endif %}
                 </ul>
             </div>
