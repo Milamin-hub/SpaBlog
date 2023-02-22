@@ -5,22 +5,6 @@ from django.core.validators import RegexValidator
 from blog.models import Comment, Post
 
 
-class LoginForm(forms.Form):
-    username = forms.CharField(max_length=100)
-    password = forms.CharField(widget=forms.PasswordInput)
-    
-    
-class SignUpForm(forms.Form):
-    username = forms.CharField(max_length=100)
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
-    confirm_password = forms.CharField(widget=forms.PasswordInput)
-
-    
-class CaptchaForm(forms.Form):
-    captcha = forms.CharField(max_length=4)
-
-
 class PostForm(forms.ModelForm):
     captcha = CaptchaField()
 
@@ -39,3 +23,6 @@ class CommentForm(forms.ModelForm):
             'text': Textarea(attrs={'rows': 5})
         }
 
+
+class CaptchaForm(forms.Form):
+    captcha = forms.CharField(max_length=4)
