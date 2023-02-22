@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from blog.views import PostListView, PostDetailView, PostCreateView
+from blog.views import CommentCreateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', PostListView.as_view(), name='home'),
     path('<int:year>/<int:month>/<int:day>/<slug:slug>/', PostDetailView.as_view(), name='post_detail'),
     path('post/create/', PostCreateView.as_view(), name='post_create'),
-    
+    path('post/comment/create/', CommentCreateView.as_view(), name='comment_create'),   
 ]
