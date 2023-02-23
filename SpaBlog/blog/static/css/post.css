@@ -1,0 +1,58 @@
+@import "./reset.css";
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;700&display=swap');
+
+
+.post-container {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.post {
+  margin-top: 15px;
+  padding: 10px;
+}
+
+.post-img {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+.post-author,
+.comment-author {
+  font-weight: bold;
+  margin: 0;
+}
+
+.grid-post {
+    font-weight: bold;
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    grid-template-rows: repeat(2, auto);
+    grid-column-gap: 20px;
+    align-items: center;
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.grid-post-body {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    grid-column-gap: 20px;
+    align-items: center;
+    padding: 10px;
+}
+
+.img-div-p {
+  column-count: 2;
+  display: grid;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: 2;
+}
+
+.post-body {
+  margin: 0;
+  padding-top: 10px;
+}
