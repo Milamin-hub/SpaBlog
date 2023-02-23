@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from blog.models import Post, Comment
+from account.models import Profile
 from blog.forms import CommentForm, PostForm
 
 
@@ -19,8 +20,7 @@ class PostListView(ListView):
 
     def get(self, request):
         posts = Post.objects.all()
-        comments = Comment.objects.all()
-        return render(request, 'blog/index.html', {'posts': posts, 'comments': comments})
+        return render(request, 'blog/index.html', {'posts': posts})
 
 
 class PostDetailView(DetailView):

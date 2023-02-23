@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+
+{% block content %}
+  <div class="post-container">
+    <h2 class="bl-h2">Blog</h2>
+    {% for post in posts %}
+    <div class="post">
+      <div class="grid-post">
+        <div class="img-div-p text-center">
+          <img class="post-img" src="{{ post.author_photo }}" alt="Profile photo">
+        </div>
+        <div class="a-div-p">
+          <h2 class="post-author text-center">{{ post.author }}</h2>
+        </div>
+        <div class="a-div-p">
+          <p class="post-title">{{ post.title }}</p>
+        </div>
+        <div class="a-div-p">
+          <p class="post-body">{{ post.body }}</p>
+        </div>
+      </div>
+      <hr>
+      {% if post.comments %}
+      {% for comment in post.comments.all %}
+      <div class="grid-comment">
+        <div class="img-div-p text-center">
+          <img class="comment-img" src="{{ comment.author_photo }}" alt="Profile photo">
+        </div>
+        <div class="a-div-p">
+          <p class="comment-author text-center">{{ comment.author }}</p>
+        </div>
+        <div class="a-div-p">
+          <p class="comment-text">{{ comment.text }}</p>
+        </div>
+      </div>
+      <hr>
+      {% endfor %}
+      {% else %}
+      <p>No comments yet.</p>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  {% include "pagination.html" with page=page_obj %}
+{% endblock %}

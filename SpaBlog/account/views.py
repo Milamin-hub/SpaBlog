@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout
+from account.models import Profile
 
 
 class LoginView(View):
@@ -41,6 +42,7 @@ class RegisterView(View):
     def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            profile = Profile.objects.create(user=user)
             return redirect('login')
         return render(request, self.template_name, {'form': form})

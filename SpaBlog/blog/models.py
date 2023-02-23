@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from taggit.managers import TaggableManager
 from captcha.fields import CaptchaField
+from account.models import Profile
 
 
 class PublishedManager(models.Manager):
@@ -37,6 +38,10 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('blog:post_detail', args=[self.publish.year,self.publish.month, self.publish.day, self.slug])
 
+    def author_photo(self):
+        profile = Profile.objects.get(user=self.author)
+        return profile.photo.url
+
 
 class Comment(models.Model):
     post = models.ForeignKey('blog.Post', on_delete=models.CASCADE, related_name='comments')
@@ -51,6 +56,10 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ('created', )
+    
+    def author_photo(self):
+        profile = Profile.objects.get(user=self.author)
+        return profile.photo.url
 
     def __str__(self):
         return f'Comment by {self.name} on {self.post}'
@@ -62,3 +71,5 @@ class Captcha(models.Model):
 
     class Meta:
         ordering = ('post', )
+    
+    

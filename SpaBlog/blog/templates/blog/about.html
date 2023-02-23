@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+
+{% block content %}
+    <header class="header">
+        <div class="header__wrapper">
+            <h1 class="header__title">
+                <strong>Hi, my name is <em>Oleksandr</em></strong><br>
+                I'm a junior python developer (backend)
+            </h1>
+        </div>
+    </header>
+
+    <main class="section">
+        <div class="container">
+            <h1 class="title-1">Contacts</h1>
+            <ul class="content-list">
+                <li class="content-list__item">
+                    <h2 class="title-2">Location</h2>
+                    <p>Kiev, Ukraine</p>
+                </li>
+                <li class="content-list__item">
+                    <h2 class="title-2">Telegram</h2>
+                    <p><a href="tel:+380992930789"><em>+38 099 293 07 89</em></a></p>
+                </li>
+                <li class="content-list__item">
+                    <h2 class="title-2">Email</h2>
+                    <p><a href="mailto:webdev@protonmail.com">oskalenik@gmail.com</a></p>
+                </li>
+            </ul>
+        </div>
+    </main>
+{% endblock %}
