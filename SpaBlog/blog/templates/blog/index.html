@@ -6,34 +6,94 @@
 
 {% block content %}
 
-    {% for post in posts %}
-    <div class="post">
-      <div class="grid-post">
-        <img class="post-img" src="{{ post.author_photo }}" alt="Profile photo">
-        <h2>{{ post.author }}</h2>
-      </div>
-      <div class="grid-post-body">
-        <p>{{ post.title }}</p>
-        <p>{{ post.body }}</p>
-      </div>
-      <hr>
-      {% if post.comments %}
-      {% for comment in post.comments.all %}
-      <div class="grid-comment">
-          <img class="comment-img" src="{{ comment.author_photo }}" alt="Profile photo">
-          <p>{{ comment.author }}</p>
-      </div>
-      <div class="grid-comment-body">
-        <p>{{ comment.text }}</p>
-      </div>
-      <hr>
-      {% endfor %}
-      {% else %}
-      <p>No comments yet.</p>
-      {% endif %}
+  {% block extrahead %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+  {% endblock extrahead %}
+
+  {% for post in posts %}
+  <script>
+    $(document).ready(function() {
+      $('.add-comment-form').hide();
+
+      $('.add-comment-button').click(function() {
+        $(this).closest('.post').find('.add-comment-form').fadeIn();
+      });
+    });
+  </script>
+  <div class="post">
+
+    <div class="grid-post">
+      <img class="post-img" src="{{ post.author_photo }}" alt="Profile photo">
+      <h2 class="post-head">
+          <span class="post-author">{{ post.author }}</span>
+        {% if datetime.date > post.created.date %}
+          <span class="post-date">{{ post.created.date }}</span>
+        {% else %}
+          <span class="post-time">{{ post.created.time }}</span>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+          <button type="submit" class="add-comment-button">Добавить комментарий</button>
+        {% endif %}
+      </h2>
     </div>
-    {% endfor %}
+
+    
+    
+    <div class="add-comment-form">
+      <form id="comment-form-{{ post.id }}" class="comment-form" action="{% url 'add_comment' post.id %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="post_id" value="{{ post.id }}">
+        <div class="form-group">
+          <label for="text">Текст комментария:</label>
+          <textarea name="text" id="text" rows="3"></textarea>
+        </div>
+        <button type="submit">Добавить комментарий</button>
+      </form>
+    </div>
+
+    <div class="grid-post-body">
+      <span class="post-title">{{ post.title }}</span>
+      <span class="post-text">{{ post.body }}</span>
+    </div>
+    <hr>
+    {% if post.comments %}
+      {% for comment in post.comments.all %}
+        <div class="grid-comment">
+            <img class="comment-img" src="{{ comment.author_photo }}" alt="Profile photo">
+            <div class="comment-head">
+                <span class="comment-author">{{ comment.author }}</span>
+                {% if datetime.date > comment.created.date %}
+                  <span class="comment-date">{{ comment.created.date }}</span>
+                {% else %}
+                  <span class="comment-time">{{ comment.created.time }}</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="grid-comment-body">
+          <p>{{ comment.text }}</p>
+        </div>
+        <hr>
+      {% endfor %}
+    {% else %}
+      <p>No comments yet.</p>
+    {% endif %}
+  </div>
+  {% endfor %}
   </div>
 
-  {% include "pagination.html" with page=page_obj %}
+  <div class="pagination">
+    <span class="page-number">Page: {{ page_obj.number }}</span>
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    {% else %}
+      <a class="page-item disabled" href="#">Previous</a>
+    {% endif %}
+      
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">Next</a>
+    {% else %}
+      <a class="page-item disabled" href="#">Next</a>
+    {% endif %}
+    </div>
+  
 {% endblock %}

@@ -21,6 +21,9 @@ from blog.views import CommentCreateView, PostCreateView
 
 from django.conf import settings
 from django.conf.urls.static import static
+from captcha.views import captcha_image
+
+app_name = 'blog'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,11 +31,14 @@ urlpatterns = [
     path('', PostListView.as_view(), name='home'),
     path('<int:year>/<int:month>/<int:day>/<slug:slug>/', PostDetailView.as_view(), name='post_detail'),
     path('post/create/', PostCreateView.as_view(), name='post_create'),
-    path('post/comment/create/', CommentCreateView.as_view(), name='comment_create'),
+    path('post/<int:pk>/comment/', CommentCreateView.as_view(), name='add_comment'),
+
 
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('register/', RegisterView.as_view(), name='register'),
+
+    path('captcha-image/<str:key>/', captcha_image, name='captcha-image'),
 ]
 
 if settings.DEBUG:

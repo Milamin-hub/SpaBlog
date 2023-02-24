@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="create-post-container">
+    <h1 class="create-post-title">Create Post</h1>
+    <form method="POST" class="create-post-form">
+      {% csrf_token %}
+      <span class="post-create-text-title">Title</span>
+      {{ form.title }}
+      <span class="post-create-text-body">Body</span>
+      {{ form.body }}
+      <span class="post-create-text-tags">Tags</span>
+      {{ form.tags }}
+      <span class="post-create-status">
+        <span class="status">Status</span>  
+        {{ form.status }}
+      </span>
+      
+      <span class="post-create-captcha">
+        Captcha 
+        <span class="captcha">{{ form.captcha }}</span> 
+      </span>
+      
+      
+      <button type="submit" class="create-post-button">Create</button>
+    </form>
+  </div>
+{% endblock %}

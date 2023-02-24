@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +12,7 @@
     <link rel="stylesheet" href="{% static 'css/reset.css' %}">
     <link rel="stylesheet" href="{% static 'css/post.css' %}">
     <link rel="stylesheet" href="{% static 'css/comment.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pagination.css' %}">
 </head>
     
     <nav class="nav">
@@ -25,7 +27,8 @@
 
                 <ul class="nav-list">
                     {% if request.user.is_authenticated %}
-                        <li class="nav-list__item"><a href="{% url 'home' %}" class="nav-list__link nav-list__link--active">Home</a></li>
+                        <li class="nav-list__item"><a href="{% url 'home' %}" class="nav-list__link">Home</a></li>
+                        <li class="nav-list__item"><a href="{% url 'post_create' %}" class="nav-list__link">Create Post</a></li>
                         <li method="post" class="nav-list__item"><a href="{% url 'logout' %}" class="nav-list__link">Logout</a></li>
                     {% else %}
                         <li class="nav-list__item"><a href="{% url 'login' %}" class="nav-list__link">Login</a></li>
@@ -57,5 +60,9 @@
     </footer>
 
     <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/add_comment.js' %}"></script>
+    {% block extrahead %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    {% endblock extrahead %}
 </body>
 </html>

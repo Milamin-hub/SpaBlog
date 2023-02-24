@@ -1,0 +1,22 @@
+{%  if comments %}
+  {% for comment in comments %}
+    <div class="grid-comment">
+      <img class="comment-img" src="{{ comment.author_photo }}" alt="Profile photo">
+      <div class="comment-head">
+        <span class="comment-author">{{ comment.author }}</span>
+        {% if datetime.date > comment.created.date %}
+          <span class="comment-date">{{ comment.created.date }}</span>
+        {% else %}
+          <span class="comment-time">{{ comment.created.time }}</span>
+        {% endif %}
+      </div>
+    </div>
+    <div class="grid-comment-body">
+      <p>{{ comment.text }}</p>
+    </div>
+    <hr>
+    {% if comment.children.count > 0 %}
+      {% display_comments comment.children.all %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
