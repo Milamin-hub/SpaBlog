@@ -9,10 +9,11 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('title', 'body', 'tags', 'status', 'captcha')
+        fields = ('title', 'body', 'tags', 'captcha')
 
 
 class CommentForm(forms.ModelForm):
+    parent = forms.IntegerField(required=False, widget=forms.HiddenInput())
     
     class Meta:
         model = Comment

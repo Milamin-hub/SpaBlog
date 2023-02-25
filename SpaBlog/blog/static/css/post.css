@@ -112,13 +112,12 @@
 }
 
 .create-post-button {
-  background-color: #007bff;
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 3px;
   font-size: 1.2rem;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  margin-top: 5%;
 }
 
 .create-post-button:hover {
@@ -144,4 +143,9 @@
 
 .captcha {
   display: inline;
+}
+
+.m-createpost {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
 }

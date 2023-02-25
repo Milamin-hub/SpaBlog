@@ -17,3 +17,8 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('author', 'email', 'post', 'created', 'active') 
     list_filter = ('active', 'created', 'updated') 
     search_fields = ('author', 'email', 'body') 
+
+
+@admin.register(models.PostFile)
+class PostfileAdmin(admin.ModelAdmin): 
+    list_display = ('post', 'file')
