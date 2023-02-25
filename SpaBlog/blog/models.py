@@ -6,6 +6,7 @@ from taggit.managers import TaggableManager
 from captcha.fields import CaptchaField
 from account.models import Profile
 from django.utils.text import slugify
+import magic
 
 
 class PublishedManager(models.Manager):
@@ -25,7 +26,7 @@ class Post(models.Model):
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='published')
     objects = models.Manager()
     published = PublishedManager()
     tags = TaggableManager()
@@ -77,4 +78,26 @@ class Captcha(models.Model):
     class Meta:
         ordering = ('post', )
     
+
+class PostFile(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='files')
+    file = models.FileField(upload_to='post_files')
+
+    def save(self, *args, **kwargs):
+        if self.file:
+            mime = magic.Magic(mime=True)
+            file_type = mime.from_buffer(self.file.read(1024))
+
+            if file_type.startswith('image'):
+                self.file.upload_to = 'post_images'
+            elif file_type.startswith('text'):
+                self.file.upload_to = 'post_text_files'
+            else:
+                # handle other types of files
+                pass
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.file.name}"
     

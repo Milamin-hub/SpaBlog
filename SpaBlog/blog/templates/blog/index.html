@@ -42,6 +42,17 @@
       <span class="post-text">{{ post.body }}</span>
     </div>
 
+    <div class="grid-post-body">
+      {% if post.files.all %}
+        <h3>Files:</h3>
+        <ul>
+          {% for file in post.files.all %}
+            <li><a href="{{ file.file.url }}">{{ file.file.name }}</a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
     <div class="add-comment-form">
       <form id="comment-form-{{ post.id }}" class="comment-form" action="{% url 'add_comment' post.id %}" method="post">
         {% csrf_token %}
@@ -57,6 +68,7 @@
     <hr>
 
     {% if post.comments %}
+
       {% for comment in post.comments.all %}
         <script>
           $(document).ready(function() {
@@ -67,11 +79,13 @@
             });
           });
         </script>
+
           <div class="comment-base-line">
             <div class="grid-comment">
               <img class="comment-img" src="{{ comment.author_photo }}" alt="Profile photo">
               <div class="comment-head">
                 <span class="comment-author">{{ comment.author }}</span>
+
                 {% if datetime.date > comment.created.date %}
                   <span class="comment-date">{{ comment.created.date }}</span>
                 {% else %}
@@ -92,15 +106,15 @@
 
     
             <div class="comment-reply-form">
-              <form id="comment-reply-form-{{ comment.id }}" class="comment-form" action="{% url 'add_comment' post.id %}" method="post">
+              <form id="comment-reply-form-{{ comment.id }}" class="comment-form" action="{% url 'add_comment' post.id %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="post_id" value="{{ post.id }}">
-                <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                <input type="hidden" name="parent_id" value="{{ comment.id }}"> 
                 <div class="form-group">
-                  <label for="text">Текст комментария:</label>
-                  <textarea name="text" id="text" rows="3" required oninvalid="this.setCustomValidity('Введите текст комментария')"></textarea>
+                  <label for="text">Comment text:</label>
+                  <textarea name="text" id="text" rows="3" required oninvalid="this.setCustomValidity('Enter comment text')"></textarea>
                 </div>
-                <button type="submit">Добавить комментарий</button>
+                <button type="submit"  class="btn btn-primary">Add Comment</button>
               </form>
             </div>
 
