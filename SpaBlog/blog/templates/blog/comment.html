@@ -1,9 +1,10 @@
-{% block content %}
-  <h2>Add a comment</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="hidden" name="parent_id" value="{{ parent_comment.id }}">
-    <button type="submit">Submit</button>
-  </form>
-{% endblock %}
+<form id="comment-reply-form-{{ comment.id }}" class="comment-form" action="{% url 'reply_comment' comment.id %}" method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="post_id" value="{{ post.id }}">
+  <input type="hidden" name="parent_id" value="{{ parent_comment.id }}">
+  <div class="form-group">
+    <label for="text">Comment text:</label>
+    <textarea name="text" id="text" rows="3" required oninvalid="this.setCustomValidity('Enter comment text')"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Add Comment</button>
+</form>

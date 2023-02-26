@@ -2,7 +2,7 @@ from django.views.generic import ListView, CreateView, DetailView
 from django.db.models import F
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -91,35 +91,33 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         post = get_object_or_404(Post, pk=self.kwargs['pk'])
         form.instance.post = post
         form.instance.author = self.request.user
-
-        parent_id = form.cleaned_data.get('parent')
-        if parent_id:
-            parent_comment = Comment.objects.get(id=parent_id)
-            form.instance.parent = parent_comment
-
         return super().form_valid(form)
 
-    def build_tree(self, comments):
-        """
-        Recursively builds a tree structure of comments and their children.
-        """
-        comment_dict = {}
-        root_comments = []
-        for comment in comments:
-            comment_dict[comment.id] = comment
-            if not comment.parent:
-                root_comments.append(comment)
-
-        def add_children(parent_comment):
-            parent_comment.children = []
-            for child_comment in comment_dict.values():
-                if child_comment.parent_id == parent_comment.id:
-                    parent_comment.children.append(child_comment)
-                    add_children(child_comment)
-
-        for root_comment in root_comments:
-            add_children(root_comment)
-
-        return root_comments
-
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
     
+
+class CommentReplyView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment.html'
+    success_url = reverse_lazy('home')
+    
+    def post(self, request, comment_id):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = get_object_or_404(Comment, id=comment_id)
+            post = comment.post
+            parent_id = form.cleaned_data.get("parent_id")
+            if parent_id:
+                parent_comment = get_object_or_404(Comment, id=parent_id)
+                comment = form.save(commit=False)
+                comment.post = post
+                comment.parent = parent_comment
+                comment.save()
+            else:
+                comment = form.save(commit=False)
+                comment.post = post
+                comment.save()
+        return redirect("home")
