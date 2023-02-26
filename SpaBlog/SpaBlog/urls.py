@@ -18,6 +18,7 @@ from django.urls import path
 from account.views import LoginView, LogoutView, RegisterView
 from blog.views import PostListView, PostDetailView
 from blog.views import CommentCreateView, PostCreateView
+from blog.views import CommentReplyView
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -32,6 +33,7 @@ urlpatterns = [
     path('<int:year>/<int:month>/<int:day>/<slug:slug>/', PostDetailView.as_view(), name='post_detail'),
     path('post/create/', PostCreateView.as_view(), name='post_create'),
     path('post/<int:pk>/comment/', CommentCreateView.as_view(), name='add_comment'),
+    path('comment/reply/<int:comment_id>/', CommentReplyView.as_view(), name='reply_comment'),
 
 
     path('login/', LoginView.as_view(), name='login'),

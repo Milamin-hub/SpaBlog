@@ -81,35 +81,65 @@
         </script>
 
           <div class="comment-base-line">
-            <div class="grid-comment">
-              <img class="comment-img" src="{{ comment.author_photo }}" alt="Profile photo">
-              <div class="comment-head">
-                <span class="comment-author">{{ comment.author }}</span>
+            {% if not comment.parent_comment %}
+              <div class="grid-comment">
+                
+                <img class="comment-img" src="{{ comment.author_photo }}" alt="Profile photo">
+                <div class="comment-head">
+                  
+                  <span class="comment-author">{{ comment.author }}</span>
 
-                {% if datetime.date > comment.created.date %}
-                  <span class="comment-date">{{ comment.created.date }}</span>
-                {% else %}
-                  <span class="comment-time">{{ comment.created.time }}</span>
-                {% endif %}
+                  {% if datetime.date > comment.created.date %}
+                    <span class="comment-date">{{ comment.created.date }}</span>
+                  {% else %}
+                    <span class="comment-time">{{ comment.created.time }}</span>
+                  {% endif %}
 
+                  {% if request.user.is_authenticated %}
+                    <button type="button" class="btn btn-sm add-reply-button" data-parent-id="{{ comment.id }}">Ответить</button>
+                  {% endif %}
 
-                {% if request.user.is_authenticated %}
-                  <button type="button" class="add-reply-button" data-parent-id="{{ comment.id }}">Ответить</button>
-                {% endif %}
+                </div>
               </div>
-            </div>
-    
-            <div class="grid-comment-body">
-              {{ comment.parent_comment }}
-              <p>{{ comment.text }}</p>
-            </div>
+              
+              <div class="grid-comment-body">
+                <p>{{ comment.text }}</p>
+              </div>
+            {% else %}
+              {{ comment. }} 
 
-    
-            <div class="comment-reply-form">
-              <form id="comment-reply-form-{{ comment.id }}" class="comment-form" action="{% url 'add_comment' post.id %}" method="POST">
+              <div style="width: 90%; float: right;" class="grid-comment">
+                  
+                <img class="comment-img" src="{{ comment.author_photo }}" alt="Profile photo">
+                <div class="comment-head">
+                  
+                  <span class="comment-author">{{ comment.author }}</span>
+
+                  {% if datetime.date > comment.created.date %}
+                    <span class="comment-date">{{ comment.created.date }}</span>
+                  {% else %}
+                    <span class="comment-time">{{ comment.created.time }}</span>
+                  {% endif %}
+
+                  {% if request.user.is_authenticated %}
+                    <button type="button" class="btn btn-sm add-reply-button" data-parent-id="{{ comment.id }}">Ответить</button>
+                  {% endif %}
+
+                </div>
+              </div>
+              
+              <div style="width: 80%; float: right;" class="grid-comment-body">
+                <p>{{ comment.text }}</p>
+              </div>
+              
+            {% endif %}
+
+            
+            <div style="width: 90%; float: right;" class="comment-reply-form">
+              <form id="comment-reply-form-{{ comment.id }}" class="comment-form" action="{% url 'reply_comment' comment.id %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="post_id" value="{{ post.id }}">
-                <input type="hidden" name="parent_id" value="{{ comment.id }}"> 
+                <input type="hidden" name="parent_comment" value="{{ comment.id }}"> 
                 <div class="form-group">
                   <label for="text">Comment text:</label>
                   <textarea name="text" id="text" rows="3" required oninvalid="this.setCustomValidity('Enter comment text')"></textarea>
@@ -117,6 +147,19 @@
                 <button type="submit"  class="btn btn-primary">Add Comment</button>
               </form>
             </div>
+
+            <script>
+              $(document).ready(function() {
+                // Определение обработчика события для кнопки "Ответить"
+                $(".add-reply-button").click(function() {
+                  // Получение идентификатора родительского комментария
+                  var parentCommentId = $(this).data("parent-id");
+            
+                  // Отображение формы для добавления ответа
+                  $("#comment-reply-form-" + parentCommentId).toggle();
+                });
+              });
+            </script>
 
           </div>
       {% endfor %}
