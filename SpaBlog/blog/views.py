@@ -16,8 +16,23 @@ class PostListView(ListView):
     model = Post
     template_name = 'blog/index.html'
     context_object_name = 'posts'
-    paginate_by = 2
+    paginate_by = 25
     ordering = ['-created']
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        sort = self.request.GET.get('sort', '')
+        if sort == 'name':
+            qs = qs.order_by('author__username', '-created')
+        elif sort == 'email':
+            qs = qs.order_by('author__email', '-created')
+        elif sort == 'created':
+            qs = qs.order_by('-created')
+        elif sort == 'created-reverse':
+            qs = qs.order_by('created')
+        else:
+            qs = qs.order_by('-created')
+        return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

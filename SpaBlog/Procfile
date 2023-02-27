@@ -1,0 +1,1 @@
+web: gunicorn SpaBlog.wsgi --log-file -
