@@ -3,10 +3,10 @@ services:
   app:
     build: .
     volumes:
-      - .:/django
+      - .:/Spablog
     ports:
       - 8000:8000
     network_mode: "host"
-    image: app:django
-    container_name: Blog
+    image: app:SpaBlog
+    container_name: Spa
     command: python3 manage.py runserver

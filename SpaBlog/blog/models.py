@@ -2,7 +2,6 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
-from taggit.managers import TaggableManager
 from captcha.fields import CaptchaField
 from account.models import Profile
 from django.utils.text import slugify
@@ -29,10 +28,9 @@ class Post(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='published')
     objects = models.Manager()
     published = PublishedManager()
-    tags = TaggableManager()
 
     class Meta:
-        ordering = ('-publish',)
+        ordering = ['-created', 'author__username', 'author__email']
 
     def __str__(self):
         return self.title
