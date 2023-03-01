@@ -77,17 +77,27 @@ WSGI_APPLICATION = 'SpaBlog.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+import os
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'blog',
-        'USER': 'milamin',
-        'PASSWORD': 'pass',
-        'HOST': 'localhost',
-        'PORT': '',
-    },
-}
+
+if os.environ.get('DATABASE_URL'): # если есть переменная окружения DATABASE_URL, используем PostgreSQL
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'blog',
+            'USER': 'milamin',
+            'PASSWORD': 'pass',
+            'HOST': 'localhost',
+            'PORT': '',
+        }
+    }
+else: # иначе используем SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 
 # Password validation
@@ -123,7 +133,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-import os
 
 
 STATIC_URL = 'static/'

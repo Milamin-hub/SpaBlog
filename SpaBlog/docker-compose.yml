@@ -7,6 +7,6 @@ services:
     ports:
       - 8000:8000
     network_mode: "host"
-    image: app:SpaBlog
-    container_name: Spa
+    image: app:SpaBlogSqlite
+    container_name: SpaBlogSqlite
     command: python3 manage.py runserver
