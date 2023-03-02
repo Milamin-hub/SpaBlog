@@ -8,7 +8,9 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from blog.models import Post, Comment, PostFile
 from blog.forms import CommentForm, PostForm
-from django.http import HttpResponseBadRequest
+from lxml.html import fromstring
+import bleach
+import re
 import datetime
 
 
@@ -67,6 +69,14 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         for file in files:
             post_file = PostFile(post=self.object, file=file)
             post_file.save()
+            
+        # Cleaning HTML content
+        form.instance.body = clean_html(form.instance.body)
+        
+        # Validating HTML
+        if not is_valid_html(form.instance.body):
+            form.add_error('body', 'Invalid HTML')
+            return self.form_invalid(form)
         
         return response
 
@@ -136,3 +146,16 @@ class CommentReplyView(LoginRequiredMixin, CreateView):
                 comment.post = post
                 comment.save()
         return redirect("home")
+    
+
+def clean_html(content):
+    allowed_tags = ['a', 'code', 'i', 'strong']
+    allowed_attrs = {'a': ['href', 'title']}
+    return bleach.clean(content, tags=allowed_tags, attributes=allowed_attrs, strip=True)
+
+def is_valid_html(content):
+    try:
+        fromstring(content)
+        return True
+    except:
+        return False
